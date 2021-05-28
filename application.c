@@ -1,17 +1,20 @@
 #include "adc.h"
 #include "pwm.h"
 
-
+unsigned int adc_value = 0;
 
 void main()
 {
   unsigned int a;
+  TRISA = 0xFF; //PORTA as input
   TRISB = 0x00; //PORTB as output
   TRISC = 0x00; //PORTC as output
-  TRISA = 0xFF; //PORTA as input
+
   ADC_Init(); //Initializes ADC Module
-  /*-------------------------------------adc section------------------------------*/
-  
+  do
+  {
+    a = ADC_Read(0); //Reading Analog Channel 0
+    adc_value = a; // store the adc output to variable.
   
   unsigned int i=0,j=0;
   PWM1_Init(5000);
@@ -25,13 +28,7 @@ void main()
   
   
 
-  do
-  {
-    a = ADC_Read(0); //Reading Analog Channel 0
-    PORTB = a; //Lower 8 bits to PORTB
-    PORTC = a>>8; //Higher 2 bits to PORTC
-
-    /*------------------------------adc section---------------------------------------*/
+  
     
     if(RD0 == 0 && i<1000)
       i=i+10;
